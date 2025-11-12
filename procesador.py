@@ -45,7 +45,7 @@ def procesar_partidos(archivo_json):
             total_visitante = goles.get('away')
             entretiempo_local = entretiempo.get('home')
             entretiempo_visitante = entretiempo.get('away')
-            
+
             # Crea un diccionario simple (hecho) para cada partido
             partido_simple = {
                 'partido_id': fixture.get('id'),
@@ -61,9 +61,9 @@ def procesar_partidos(archivo_json):
                 'entretiempo_visitante': entretiempo_visitante if entretiempo_visitante is not None else 0,
                 'ganador_local': equipo_local.get('winner') # (puede ser True, False, o None para empate)
             }
-            
+
             partidos_extraidos.append(partido_simple)
-        
+
         except Exception as e:
             # Capturar errores si la estructura de un partido es inesperada
             print(f"Error procesando partido (ID: {fixture.get('id')}): {e}")
@@ -72,9 +72,6 @@ def procesar_partidos(archivo_json):
     return partidos_extraidos
 
 REGLAS_PROLOG = [
-    # --- Directiva (se maneja por separado) ---
-    ":- dynamic(partido/9).",
-    
     # --- Reglas de utilidad ---
     "partido_jugado(Equipo) :- partido(_, _, _, Equipo, _, _, _, _, _)",
     "partido_jugado(Equipo) :- partido(_, _, _, _, _, _, Equipo, _, _)",
@@ -160,11 +157,11 @@ print(f'Cargados {len(lista_prolog)} hechos de tipo "partido/9"\n')
 
 # Cargar reglas
 print('Cargando reglas... ')
-directiva = REGLAS_PROLOG[0].replace(':- ', '').replace('.', '')
+directiva = "dynamic(partido/9)"
 print(f'Ejecutando directiva: {directiva}')
 list(motor.consultar(directiva))
 
-for regla in REGLAS_PROLOG[1:]:
+for regla in REGLAS_PROLOG:
     motor.agregar_regla(regla)
 print('Reglas cargadas\n')
 
