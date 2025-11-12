@@ -192,15 +192,10 @@ if resultado_remontada:
 print("\n[Consulta 4] Lista de todos los equipos participantes:")
 consulta_equipos = "setof(Equipo, partido_jugado(Equipo), Equipos)."
 resultado_equipos = motor.consultar(consulta_equipos)
-
 if resultado_equipos:
-    # El resultado es una lista que contiene un diccionario: [{'Equipos': [...]}]
     lista_de_equipos = resultado_equipos[0]['Equipos']
     print(f"Se encontraron {len(lista_de_equipos)} equipos:")
-    
-    # Imprimir la lista
-    # (Usamos replace para quitar las comillas simples que Prolog añade a los átomos)
     for equipo in lista_de_equipos:
-        print(f"{equipo}")
+        print(equipo)
 else:
     print("No se pudieron encontrar equipos.")
