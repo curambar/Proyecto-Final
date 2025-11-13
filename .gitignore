@@ -1,0 +1,12 @@
+# Ignorar todos los archivos de bytecode compilado de Python
+*.pyc
+
+# Ignorar los directorios __pycache__ que contienen los archivos .pyc
+__pycache__/
+
+# Opcional: Ignorar archivos generados por VS Code
+.vscode/
+
+# Opcional: Ignorar el entorno virtual (muy recomendado)
+.venv/
+venv/
