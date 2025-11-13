@@ -24,7 +24,7 @@ def cargar_reglas(archivo_reglas, motor):
 
 if __name__ == "__main__":
     # Cargar datos
-    archivo = 'primera2021.json'
+    archivo = 'data/primera2021.json'
     partidos_data = procesar_partidos(archivo)
 
     # Formatear datos para prolog
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     motor.generar_hechos('partido',lista_prolog)
 
     # Cargar reglas
-    cargar_reglas('REGLAS.json', motor)
+    cargar_reglas('data/REGLAS.json', motor)
 
     # ------------------------------------------------------------
     #                    Seccion de consultas

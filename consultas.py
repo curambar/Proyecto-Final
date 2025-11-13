@@ -255,7 +255,8 @@ class ConsultasLiga:
 
     def buscar_partido_por_id(self, partido_id):
         """
-        Busca un partido por su ID y retorna su informacion en formato 
+        Busca un partido por su ID y retorna su informacion en formato lista 
+        (se recomienda pasar a formato JSON)
         
         Args:
             partido_id (int): ID del partido
@@ -269,7 +270,8 @@ class ConsultasLiga:
 
     def resumen_equipo(self, equipo_nombre):
         """
-        Devuelve un resumen completo de las estadísticas de un equipo
+        Devuelve un resumen completo de las estadísticas de un equipo retorna su informacion en formato lista 
+        (se recomienda pasar a formato JSON)
         
         Args:
             equipo_nombre (string): nombre del equipo
