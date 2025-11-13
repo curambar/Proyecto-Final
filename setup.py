@@ -1,14 +1,16 @@
 import json
 from motor_logico import MotorLogico
 from procesador import procesar_partidos, establecer_formato_partidos
-from consultas import ConsultasLiga  # Cambiar esta importación
+from consultas import ConsultasLiga
 
 class SetUp:  
             
     def __init__(self, archivo):
-        self.archivo = archivo
         partidos_data = procesar_partidos(archivo)
-
+        if partidos_data is None:
+            print(f"ERROR: No se pudo cargar la data desde '{archivo}'. Abortando inicialización.")
+            return
+        
         # Formatear datos para prolog
         lista_prolog = establecer_formato_partidos(partidos_data)
 
@@ -35,5 +37,5 @@ class SetUp:
             self.motor.agregar_regla(regla)
         print('Reglas cargadas\n')
         
-    def obtener_motor(self):
-        return self.motor
+    def obtener_acceso_consultas(self):
+        return ConsultasLiga(self.motor)
