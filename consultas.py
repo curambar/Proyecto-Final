@@ -255,7 +255,7 @@ class ConsultasLiga:
 
     def buscar_partido_por_id(self, partido_id):
         """
-        Busca un partido por su ID
+        Busca un partido por su ID y retorna su informacion en formato 
         
         Args:
             partido_id (int): ID del partido
@@ -291,17 +291,28 @@ class ConsultasLiga:
             'vallas_invictas': self.vallas_invictas_equipo(equipo_nombre)
         }
         
+        
+    def formato_json(self, datos):
+        """
+        Convierte una lista de diccionarios al formato JSON formateado
+        
+        Args:
+            datos (list): lista de diccionarios
+            
+        Returns:
+            str: representación JSON formateada
+        """
+        return json.dumps(datos, indent=2)
+    
+    
     def consultar(self):
         """Consultas generales preprogramadas
-
-        Args:
-            motor (MotorLogico): el motor lógico con los hechos y reglas cargadas
         """
         
         print('\n[Consulta 1] Estadisticas de Tigre:')
         resultado_tigre = self.tabla_equipo(self.motor, 'tigre')
         if resultado_tigre:
-            print(json.dumps(resultado_tigre[0], indent=2))
+            print(self.formato_json([resultado_tigre]))
         else:
             print('No se encontro Tigre')
 

@@ -19,7 +19,7 @@ class MotorLogico:
         tipo: nombre del predicado (por ej. 'persona' o 'curso')
         lista_objetos: lista de diccionarios con atributos
         """
-        print('Cargando hechos... \n\n')
+        print('Cargando hechos...')
         
         for obj in lista_objetos:
             argumentos = ",".join(str(v).lower() for v in obj.values())
@@ -33,7 +33,7 @@ class MotorLogico:
             if self.comentarios is True:
                 print(f"[✔] Hecho cargado: {hecho}")
             
-        print(f'Cargados {len(lista_objetos)} hechos de tipo "{tipo}/{len(obj.keys())}"\n')
+        print(f'Cargados {len(lista_objetos)} hechos de tipo "{tipo}/{len(obj.keys())}"\n\n')
 
 
     def agregar_regla(self, regla):
@@ -74,4 +74,3 @@ class MotorLogico:
         """
         consulta = ",".join([f"X{i}" for i in range(1, aridad + 1)])
         return list(self.prolog.query(f"{tipo}({consulta})"))
-    
