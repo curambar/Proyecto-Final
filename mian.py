@@ -16,7 +16,7 @@ print('Formateo listo\n')
 
 # Cargar hechos
 print('Cargando hechos... ')
-motor = MotorLogico(comentarios=True)
+motor = MotorLogico(comentarios=False)
 motor.generar_hechos('partido',lista_prolog)
 print(f'Cargados {len(lista_prolog)} hechos de tipo "partido/9"\n')
 

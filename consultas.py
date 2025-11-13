@@ -33,16 +33,17 @@ def consultar(motor):
         print(f"Hubo {resultado_locales[0]['N']} victorias locales.")
         
     # -----------------------------------------------------
+    lista_de_equipos = equipos_participantes(motor)
 
-    print("\n[Consulta 3] Remontadas de 'san martin tucuman':")
-    resultado_remontada = motor.consultar("total_remontadas_ganadas('san martin tucuman', N).")
-    if resultado_remontada:
-        print(f"San Martin de Tucumán logró {resultado_remontada[0]['N']} remontadas.")
+    for equipo in lista_de_equipos:
+        print(f"\n[Consulta 3] Remontadas de {equipo}:")
+        resultado_remontada = motor.consultar(f"total_remontadas_ganadas('[{equipo}]', N).")
+        if resultado_remontada:
+            print(f"{equipo.title()} logró {resultado_remontada[0]['N']} remontadas.")
 
     # -----------------------------------------------------
 
     print("\n[Consulta 4] Lista de todos los equipos participantes:")
-    lista_de_equipos = equipos_participantes(motor)
     if len(lista_de_equipos) > 0:
         print(f"Se encontraron {len(lista_de_equipos)} equipos:")
         for equipo in lista_de_equipos:
