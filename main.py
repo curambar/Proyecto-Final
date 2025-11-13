@@ -1,42 +1,14 @@
 import json
-from motor_logico import MotorLogico
+from setup import SetUp
 from procesador import procesar_partidos, establecer_formato_partidos
 from consultas import ConsultasLiga  # Cambiar esta importación
 
-def cargar_reglas(archivo_reglas, motor):
-    """ Se cargan las reglas de un archivo en concreto, se genera en una 
-        funcion aparte del main ya que estas reglas pueden cambiarse o haber más archivos de reglas
-    """
-    print('Cargando reglas... ')
-    REGLAS_PROLOG = json.load(open(archivo_reglas))['REGLAS_PROLOG']
-    directiva = REGLAS_PROLOG[0].replace(':- ', '').replace('.', '')
-    # La primera línea es una directiva de consulta inicial
-
-    print(f'Ejecutando directiva: {directiva}')
-    list(motor.consultar(directiva))
-
-    # Se cargan las demás reglas
-    for regla in REGLAS_PROLOG[1:]:
-        motor.agregar_regla(regla)
-    print('Reglas cargadas\n')
-    
-# ------------------------------------------------------
-
 if __name__ == "__main__":
     # Cargar datos
-    archivo = 'data/primera2021.json'
-    partidos_data = procesar_partidos(archivo)
-
-    # Formatear datos para prolog
-    lista_prolog = establecer_formato_partidos(partidos_data)
-
-    # Cargar hechos
-    motor = MotorLogico(comentarios=False)
-    motor.generar_hechos('partido',lista_prolog)
-
-    # Cargar reglas
-    cargar_reglas('data/REGLAS.json', motor)
-
+    archivo = 'json/primera2021.json'
+    setup = SetUp(archivo)
+    motor = setup.obtener_motor()
+    
     # ------------------------------------------------------------
     #                    Seccion de consultas
     # ------------------------------------------------------------
@@ -80,12 +52,7 @@ if __name__ == "__main__":
     print(f"Vallas invictas de {equipo}: {consultas.vallas_invictas_equipo(equipo)}")
     print(f"Resumen de equipo {equipo}: {consultas.formato_json(consultas.resumen_equipo(equipo))}")
     
-    print("Partido 684437:", consultas.buscar_partido_por_id(684437))
-    
-    
-    
-    
-    
+    print("Partido 684437:", consultas.formato_json(consultas.buscar_partido_por_id(684437)))
     
     # Se realizan las consultas cargadas por defecto
     # consultas.consultar()
