@@ -10,6 +10,12 @@ def equipos_participantes(motor):
     resultado_equipos = motor.consultar(consulta_equipos)
     lista_de_equipos = resultado_equipos[0]['Equipos']
     return lista_de_equipos
+
+def remontadas_ganadas(motor, equipo_nombre):
+    resultado_remontada = motor.consultar(f"total_remontadas_ganadas('{equipo_nombre}', N).")
+    if resultado_remontada:
+        return resultado_remontada[0]['N']
+    return 0
     
 def consultar(motor):
     """Consultas generales preprogramadas
@@ -36,10 +42,8 @@ def consultar(motor):
     lista_de_equipos = equipos_participantes(motor)
 
     for equipo in lista_de_equipos:
-        print(f"\n[Consulta 3] Remontadas de {equipo}:")
-        resultado_remontada = motor.consultar(f"total_remontadas_ganadas('[{equipo}]', N).")
-        if resultado_remontada:
-            print(f"{equipo.title()} logró {resultado_remontada[0]['N']} remontadas.")
+        print(f"\n[Consulta 3] Remontadas de {equipo.title()}:")
+        print(f"{equipo.title()} logró {remontadas_ganadas(motor, equipo)} remontadas.")
 
     # -----------------------------------------------------
 
