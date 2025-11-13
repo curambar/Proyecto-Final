@@ -5,11 +5,12 @@ class MotorLogico:
     """
         Motor lógico se cominuca con prolog, utilizando métodos para generar hechos mediante una lista
     """
-    comentarios = True
     
-    def __init__(self):
+    
+    def __init__(self, comentarios=True):
         # Este método se ejecuta automáticamente al crear el objeto
         self.prolog = Prolog()
+        self.comentarios = comentarios
         #Se inicializa el motor Prolog, el cual permite llemar a MotorLogico.prolog.funcion() para ejecutar el prolog del popio objeto
 
     def generar_hechos(self, tipo, lista_objetos):
