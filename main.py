@@ -72,7 +72,7 @@ def get_resumen_equipo(nombre_equipo):
          return jsonify({"error": f"Equipo '{equipo}' no encontrado o sin datos."}), 404
          
     # La consulta ya retorna los datos formateados
-    return jsonify(resumen_datos[0])
+    return jsonify(resumen_datos)
 
 @app.route('/api/vallas-invictas', methods=['GET'])
 def get_equipos_valla_invicta():
