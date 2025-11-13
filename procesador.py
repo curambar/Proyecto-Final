@@ -5,6 +5,8 @@ def procesar_partidos(archivo_json):
     Carga un archivo JSON de partidos, extrae los datos relevantes de cada partido
     y los devuelve como una lista de diccionarios simples.
     """
+    print('Extrayendo datos del JSON... ')
+    
     partidos_extraidos = []
     
     try:
@@ -68,9 +70,12 @@ def procesar_partidos(archivo_json):
             print(f"Error procesando partido (ID: {fixture.get('id')}): {e}")
             continue # Saltar al siguiente partido
 
+    print(f'Procesado {archivo_json}\n')
     return partidos_extraidos
 
-def establecer_formato_prolog(partidos_data):
+def establecer_formato_partidos(partidos_data):
+    print('Formateando datos para el motor logico... \n\n')
+    
     partidos = []
     for p in partidos_data:
         hecho = {
