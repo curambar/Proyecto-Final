@@ -1,0 +1,40 @@
+{
+    "REGLAS_PROLOG": [
+        ":- dynamic(partido/9).",
+
+        "partido_jugado(Equipo) :- partido(_, _, _, Equipo, _, _, _, _, _)",
+        "partido_jugado(Equipo) :- partido(_, _, _, _, _, _, Equipo, _, _)",
+
+        "stats_partido(Equipo, 3, GolesF, GolesC) :- partido(_, _, _, Equipo, _, GolesF, _, _, GolesC), GolesF > GolesC",
+        "stats_partido(Equipo, 1, GolesF, GolesC) :- partido(_, _, _, Equipo, _, GolesF, _, _, GolesC), GolesF =:= GolesC",
+        "stats_partido(Equipo, 0, GolesF, GolesC) :- partido(_, _, _, Equipo, _, GolesF, _, _, GolesC), GolesF < GolesC",
+        "stats_partido(Equipo, 3, GolesF, GolesC) :- partido(_, _, _, _, _, GolesC, Equipo, _, GolesF), GolesF > GolesC",
+        "stats_partido(Equipo, 1, GolesF, GolesC) :- partido(_, _, _, _, _, GolesC, Equipo, _, GolesF), GolesF =:= GolesC",
+        "stats_partido(Equipo, 0, GolesF, GolesC) :- partido(_, _, _, _, _, GolesC, Equipo, _, GolesF), GolesF < GolesC",
+
+        "partidos_jugados(Equipo, PJ) :- findall(1, stats_partido(Equipo, _, _, _), Partidos), length(Partidos, PJ)",
+        "total_ganados(Equipo, PG) :- findall(1, stats_partido(Equipo, 3, _, _), Victorias), length(Victorias, PG)",
+        "total_empatados(Equipo, PE) :- findall(1, stats_partido(Equipo, 1, _, _), Empates), length(Empates, PE)",
+        "total_perdidos(Equipo, PP) :- findall(1, stats_partido(Equipo, 0, _, _), Derrotas), length(Derrotas, PP)",
+
+        "total_puntos(Equipo, Puntos) :- total_ganados(Equipo, PG), total_empatados(Equipo, PE), Puntos is (PG * 3) + (PE * 1)",
+
+        "total_gf(Equipo, GF) :- findall(G, stats_partido(Equipo, _, G, _), Goles), sum_list(Goles, GF)",
+        "total_gc(Equipo, GC) :- findall(G, stats_partido(Equipo, _, _, G), Goles), sum_list(Goles, GC)",
+        "diferencia_goles(Equipo, DG) :- total_gf(Equipo, GF), total_gc(Equipo, GC), DG is GF - GC",
+
+        "tabla_equipo(Equipo, PJ, PG, PE, PP, GF, GC, DG, Puntos) :- partido_jugado(Equipo), partidos_jugados(Equipo, PJ), total_ganados(Equipo, PG), total_empatados(Equipo, PE), total_perdidos(Equipo, PP), total_gf(Equipo, GF), total_gc(Equipo, GC), diferencia_goles(Equipo, DG), total_puntos(Equipo, Puntos)",
+
+        "total_victorias_locales(N) :- findall(1, (partido(_, _, _, _, _, GL, _, _, GV), GL > GV), Lista), length(Lista, N)",
+        "total_victorias_visitantes(N) :- findall(1, (partido(_, _, _, _, _, GL, _, _, GV), GL < GV), Lista), length(Lista, N)",
+        "total_empates(N) :- findall(1, partido(_, _, _, _, _, G, _, _, G), Lista), length(Lista, N)",
+
+        "valla_invicta(Equipo) :- partido(_, _, _, Equipo, _, _, _, _, 0)",
+        "valla_invicta(Equipo) :- partido(_, _, _, _, _, _, Equipo, _, 0)",
+        "total_vallas_invictas(Equipo, N) :- findall(1, valla_invicta(Equipo), Lista), length(Lista, N)",
+
+        "remontada_ganada(Equipo) :- partido(_, _, _, Equipo, GL_HT, GL_FT, _, GV_HT, GV_FT), GL_HT < GV_HT, GL_FT > GV_FT",
+        "remontada_ganada(Equipo) :- partido(_, _, _, _, GV_HT, GV_FT, Equipo, GL_HT, GL_FT), GL_HT < GV_HT, GL_FT > GV_FT",
+        "total_remontadas_ganadas(Equipo, N) :- findall(1, remontada_ganada(Equipo), Lista), length(Lista, N)"
+    ]
+}

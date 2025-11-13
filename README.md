@@ -117,5 +117,5 @@ Este proyecto es un prototipo funcional. El siguiente paso ideal sería desacopl
 ### 🧑‍💻 Autores
 
 * **[Tu Nombre/Usuario]** - ([curambar](https://github.com/curambar))
-* **[Nombre Alumno 2]**
+* **[Felipe Outeiral/Blizard32]** - 
 * **[Nombre Alumno 3]**
