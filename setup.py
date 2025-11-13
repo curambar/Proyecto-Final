@@ -16,8 +16,14 @@ class SetUp:
         self.motor = MotorLogico(comentarios=False)
         self.motor.generar_hechos('partido',lista_prolog)
         
-        print('Cargando reglas... ')
-        REGLAS_PROLOG = json.load(open('json/REGLAS.json'))['REGLAS_PROLOG']
+        archivo_reglas = 'json/REGLAS.json'
+        try:
+            with open(archivo_reglas, 'r') as f:
+                REGLAS_PROLOG = json.load(f)['REGLAS_PROLOG']
+        except FileNotFoundError:
+            print(f"ERROR: Archivo de reglas '{archivo_reglas}' no encontrado.")
+            return 
+        
         directiva = REGLAS_PROLOG[0].replace(':- ', '').replace('.', '')
         # La primera línea es una directiva de consulta inicial
 
