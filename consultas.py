@@ -1,4 +1,5 @@
 import json
+import threading
 
 class ConsultasLiga:
     """Clase para realizar consultas sobre los partidos de la liga usando el motor lógico"""
@@ -11,6 +12,13 @@ class ConsultasLiga:
             motor (MotorLogico): el motor lógico con hechos y reglas cargadas
         """
         self.motor = motor
+        # Lock para serializar acceso al motor Prolog (no thread-safe)
+        self._lock = threading.Lock()
+    
+    def _safe_consultar(self, consulta):
+        """Wrapper que serializa las consultas al motor Prolog."""
+        with self._lock:
+            return self.motor.consultar(consulta)
     
     def tabla_equipo(self, equipo_nombre):
         """
@@ -23,7 +31,7 @@ class ConsultasLiga:
             dict: estadísticas del equipo o None si no existe
         """
         consulta = f"tabla_equipo('{equipo_nombre}', PJ, PG, PE, PP, GF, GC, DG, Puntos)."
-        resultados = self.motor.consultar(consulta)
+        resultados = self._safe_consultar(consulta)
         return resultados[0] if resultados else None
 
     def equipos_participantes(self):
@@ -34,7 +42,7 @@ class ConsultasLiga:
             list: lista de nombres de equipos
         """
         consulta_equipos = "setof(Equipo, partido_jugado(Equipo), Equipos)."
-        resultado_equipos = self.motor.consultar(consulta_equipos)
+        resultado_equipos = self._safe_consultar(consulta_equipos)
         return resultado_equipos[0]['Equipos'] if resultado_equipos else []
 
     def remontadas_ganadas(self, equipo_nombre):
@@ -47,7 +55,7 @@ class ConsultasLiga:
         Returns:
             int: cantidad de remontadas ganadas por el equipo
         """
-        resultado_remontada = self.motor.consultar(f"total_remontadas_ganadas('{equipo_nombre}', N).")
+        resultado_remontada = self._safe_consultar(f"total_remontadas_ganadas('{equipo_nombre}', N).")
         return resultado_remontada[0]['N'] if resultado_remontada else 0
 
     def tabla_completa(self):
@@ -81,7 +89,7 @@ class ConsultasLiga:
             int: cantidad de partidos jugados
         """
         consulta = f"partidos_jugados('{equipo_nombre}', PJ)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['PJ'] if resultado else 0
 
     def victorias_equipo(self, equipo_nombre):
@@ -95,7 +103,7 @@ class ConsultasLiga:
             int: cantidad de victorias
         """
         consulta = f"total_ganados('{equipo_nombre}', PG)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['PG'] if resultado else 0
 
     def empates_equipo(self, equipo_nombre):
@@ -109,7 +117,7 @@ class ConsultasLiga:
             int: cantidad de empates
         """
         consulta = f"total_empatados('{equipo_nombre}', PE)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['PE'] if resultado else 0
 
     def derrotas_equipo(self, equipo_nombre):
@@ -123,7 +131,7 @@ class ConsultasLiga:
             int: cantidad de derrotas
         """
         consulta = f"total_perdidos('{equipo_nombre}', PP)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['PP'] if resultado else 0
 
     def goles_favor_equipo(self, equipo_nombre):
@@ -137,7 +145,7 @@ class ConsultasLiga:
             int: cantidad de goles a favor
         """
         consulta = f"total_gf('{equipo_nombre}', GF)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['GF'] if resultado else 0
 
     def goles_contra_equipo(self, equipo_nombre):
@@ -151,7 +159,7 @@ class ConsultasLiga:
             int: cantidad de goles en contra
         """
         consulta = f"total_gc('{equipo_nombre}', GC)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['GC'] if resultado else 0
 
     def diferencia_goles_equipo(self, equipo_nombre):
@@ -165,7 +173,7 @@ class ConsultasLiga:
             int: diferencia de goles (GF - GC)
         """
         consulta = f"diferencia_goles('{equipo_nombre}', DG)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['DG'] if resultado else 0
 
     def puntos_equipo(self, equipo_nombre):
@@ -179,7 +187,7 @@ class ConsultasLiga:
             int: puntos totales
         """
         consulta = f"total_puntos('{equipo_nombre}', Puntos)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['Puntos'] if resultado else 0
 
     def estadisticas_generales(self):
@@ -213,7 +221,7 @@ class ConsultasLiga:
             int: cantidad de vallas invictas
         """
         consulta = f"total_vallas_invictas('{equipo_nombre}', N)."
-        resultado = self.motor.consultar(consulta)
+        resultado = self._safe_consultar(consulta)
         return resultado[0]['N'] if resultado else 0
 
     def equipos_con_valla_invicta(self):
