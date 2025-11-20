@@ -4,7 +4,7 @@ import threading
 class ConsultasLiga:
     """Clase para realizar consultas sobre los partidos de la liga usando el motor lógico"""
     
-    def __init__(self, motor):
+    def __init__(self, motor, archivo_primera=None):
         """
         Inicializa la clase con el motor lógico cargado
         
@@ -14,6 +14,26 @@ class ConsultasLiga:
         self.motor = motor
         # Lock para serializar acceso al motor Prolog (no thread-safe)
         self._lock = threading.Lock()
+        # Mapeo nombre_equipo.lower() -> logo_url extraído desde el JSON de partidos (si se proporciona)
+        self.logo_map = {}
+        if archivo_primera:
+            try:
+                with open(archivo_primera, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                for item in data.get('response', []):
+                    teams = item.get('teams', {})
+                    home = teams.get('home', {})
+                    away = teams.get('away', {})
+                    # Normalizar nombres a minúsculas (el motor también usa .lower())
+                    if home.get('name') and home.get('logo'):
+                        self.logo_map[str(home.get('name')).lower()] = home.get('logo')
+                    if away.get('name') and away.get('logo'):
+                        self.logo_map[str(away.get('name')).lower()] = away.get('logo')
+            except FileNotFoundError:
+                # No interrumpe el funcionamiento de la API si el archivo no existe
+                print(f"Aviso: no se encontró '{archivo_primera}' para extraer logos.")
+            except Exception as e:
+                print(f"Error al leer '{archivo_primera}' para extraer logos: {e}")
     
     def _safe_consultar(self, consulta):
         """Wrapper que serializa las consultas al motor Prolog."""
@@ -72,6 +92,8 @@ class ConsultasLiga:
             stats = self.tabla_equipo(equipo)
             if stats:
                 stats['equipo'] = equipo
+                # Añadir logo si está disponible en el mapping
+                stats['logo'] = self.logo_map.get(equipo)
                 tabla.append(stats)
         
         # Ordenar por puntos (descendente) y diferencia de goles (descendente)
@@ -287,7 +309,7 @@ class ConsultasLiga:
         Returns:
             dict: resumen completo del equipo
         """
-        return {
+        resumen = {
             'equipo': equipo_nombre,
             'partidos_jugados': self.partidos_jugados_por_equipo(equipo_nombre),
             'victorias': self.victorias_equipo(equipo_nombre),
@@ -300,6 +322,9 @@ class ConsultasLiga:
             'remontadas_ganadas': self.remontadas_ganadas(equipo_nombre),
             'vallas_invictas': self.vallas_invictas_equipo(equipo_nombre)
         }
+        # Agregar logo si existe
+        resumen['logo'] = self.logo_map.get(equipo_nombre)
+        return resumen
         
         
     def formato_json(self, datos):
