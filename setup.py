@@ -6,6 +6,8 @@ from consultas import ConsultasLiga
 class SetUp:  
             
     def __init__(self, archivo):
+        # Guardar ruta del archivo para que otras partes (p.ej. ConsultasLiga) puedan usarla
+        self.archivo = archivo
         partidos_data = procesar_partidos(archivo)
         if partidos_data is None:
             print(f"ERROR: No se pudo cargar la data desde '{archivo}'. Abortando inicialización.")
@@ -38,4 +40,5 @@ class SetUp:
         print('Reglas cargadas\n')
         
     def obtener_acceso_consultas(self):
-        return ConsultasLiga(self.motor)
+        # Pasar la ruta del archivo original para que ConsultasLiga pueda extraer metadatos (logos)
+        return ConsultasLiga(self.motor, self.archivo)
