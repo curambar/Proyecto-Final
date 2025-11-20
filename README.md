@@ -9,7 +9,7 @@ El objetivo principal del proyecto es aplicar un enfoque **multi-paradigma** par
 * **Programación Lógica (Prolog):** Utilizado como motor de base de conocimiento para definir reglas complejas (ej: qué constituye una "remontada" o cómo calcular una tabla de posiciones) y permitir consultas sobre los datos cargados.
 * **API REST (Flask):** Para exponer las funcionalidades del sistema a través de endpoints web.
 
-### 🛠️ Componentes del Proyecto
+### Componentes del Proyecto
 
 1.  **`main.py` (API Flask - Python)**
     * Es el punto de entrada principal del programa.
@@ -45,7 +45,7 @@ El objetivo principal del proyecto es aplicar un enfoque **multi-paradigma** par
 7.  **`primera2021.json` (Los Datos)**
     * Archivo JSON que contiene todos los datos de los partidos de la temporada 2021 de la Primera Nacional, usados como fuente de datos para el motor lógico.
 
-### 📖 Funcionamiento
+### Funcionamiento
 
 El flujo del programa es el siguiente:
 
@@ -60,7 +60,7 @@ El flujo del programa es el siguiente:
     * `valla_invicta(Equipo)`: Identifica partidos donde un equipo no recibió goles.
 6.  La API Flask queda disponible con endpoints para consultar estas estadísticas.
 
-### 🚀 Endpoints de la API
+### Endpoints de la API
 
 La API expone los siguientes endpoints:
 
@@ -70,7 +70,7 @@ La API expone los siguientes endpoints:
 - `GET /api/equipo/<nombre_equipo>` - Retorna el resumen completo de un equipo específico
 - `GET /api/vallas-invictas` - Retorna la lista de equipos con al menos una valla invicta
 
-### 🔮 Futuro del Proyecto
+### Futuro del Proyecto
 
 Este proyecto es un prototipo funcional que demuestra la integración exitosa de múltiples paradigmas de programación. El siguiente paso ideal sería:
 
@@ -79,8 +79,8 @@ Este proyecto es un prototipo funcional que demuestra la integración exitosa de
 * Implementar caching para mejorar el rendimiento.
 * Extender el sistema para soportar múltiples temporadas y competiciones.
 
-### 🧑‍💻 Autores
+### Autores
 
-* **[Leandro XX/([curambar](https://github.com/curambar))]** - 
+* **[Leandro Suarez/([curambar](https://github.com/curambar))]** - 
 * **[Felipe Outeiral/([Blizard32](https://github.com/Blizard32))]** - 
-* **[Santiago XX /([SantiXXgit](https://github.com/cumbar))]**
+* **[Santiago Gaiero /([SGaiero](https://github.com/SGaiero))]**
